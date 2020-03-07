@@ -17,6 +17,7 @@ df_deliveries2 = pd.read_csv("Raw_Data/kaggle2_deliveries.csv")
 list(df_match2)
 list(df_innings)
 list(df_deliveries2)
+df_deliveries2.head()
 r1 = df_innings.head()
 r2 = df_deliveries2.head()
 
