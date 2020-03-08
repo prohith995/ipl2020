@@ -6,6 +6,7 @@ Created on Fri Mar  6 17:58:34 2020
 """
 
 import pandas as pd
+import pickle
 
 df_match2 = pd.read_csv("Raw_Data/kaggle2_matches.csv")
 df_deliveries2 = pd.read_csv("Raw_Data/kaggle2_deliveries.csv")
@@ -135,4 +136,5 @@ def match_player_data(x):
     
 df_deliveries2.groupby(['match_id_ordered', 'batsman'], as_index=False).apply(match_player_data)
 
-
+with open('Data/match_player_data', "wb") as file:
+    pickle.dump(df_final, file)
