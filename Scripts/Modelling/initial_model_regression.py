@@ -95,5 +95,6 @@ metrics.r2_score(y_test, y_test_pred)
 mean_absolute_percentage_error(y_train, y_train_pred)
 mean_absolute_percentage_error(y_test, y_test_pred)    
 
-
+df_test['prediction'] = y_test_pred
+df_test.sort_values('prediction', ascending=False, inplace=True)
 
