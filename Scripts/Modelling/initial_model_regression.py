@@ -98,3 +98,6 @@ mean_absolute_percentage_error(y_test, y_test_pred)
 df_test['prediction'] = y_test_pred
 df_test.sort_values('prediction', ascending=False, inplace=True)
 
+list(df_test)
+r1 = df_test[['prediction', 'score']]
+

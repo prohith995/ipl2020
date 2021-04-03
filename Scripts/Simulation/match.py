@@ -23,7 +23,7 @@ class innings:
         self.bowlers = bowlers
     
     def start_batting(self):
-        self.remaining_batsmen = self.batsmen
+        self.remaining_batsmen = self.batsmen[2:]
         self.batsmen_score = {}
         # self.final_batsmen_score = {}
         # self.last_batsman = None
@@ -31,10 +31,12 @@ class innings:
         self.current_runner = self.batsmen[1]
         self.batsmen_score[self.current_batsman] = 0            
         self.batsmen_score[self.current_runner] = 0            
-        self.over = 1
-        self.ball = 1
+        self.over = 0
+        self.ball = 0
         self.wickets = 0
         self.team_score = 0
+        self.status = 0
+        self.status_details = 'Playing'
 
     # def start_batting(self):
     #     self.remaining_bowlers = self.bowlers
@@ -54,12 +56,13 @@ class innings:
         if wicket == 1:
             self.batsmen_score[self.current_batsman] = self.batsmen_score[self.current_batsman] + runs
             # self.last_batsman = self.current_batsman
-            if self.wickets <= 9:
+            if self.wickets <= 8:
                 self.current_batsman = self.remaining_batsmen[0]
                 self.remaining_batsmen = self.remaining_batsmen[1:]
                 self.batsmen_score[self.current_batsman] = 0
             else:
-                return ('All Out')
+                self.status = 1
+                self.status_details = 'All Out'
             self.wickets = self.wickets+1
             if self.ball == 6:
                 self.ball == 0
@@ -82,8 +85,10 @@ class innings:
                 if runs % 2 == 1:
                     self.current_batsman, self.current_runner = self.current_runner, self.current_batsman
         
-        if self.over > 20:
-            return 'Innings Over'            
+        if self.over >= 20:
+            self.status = 1
+            self.status_details = 'Overs Done'
+
  
 teamA_name = 'team1'
 teamB_name = 'team2'
@@ -104,12 +109,18 @@ def play_match(teamA_name, teamB_name):
 
     for teamobj in innings._registry:
         teamobj.start_batting()
-        for over in range(20):
-            for ball in range(6):
-                # Simulate ball  
-                run_prob = [[0,1,2,3,4,6], [0.2,0.3,0.2,0.05,0.15,0.1]]
-                wicket_prob = [[0, 1], [0.95, 0.05]]
-                teamobj.ball_bowled(np.random.choice(run_prob[0], p=run_prob[1]), 
-                                 np.random.choice(wicket_prob[0], p=wicket_prob[1]))
+        # for over in range(20):
+        #     for ball in range(6):
+        while teamobj.status != 1:
+            # Simulate ball  
+            run_prob = [[0,1,2,3,4,6], [0.2,0.3,0.2,0.05,0.15,0.1]]
+            wicket_prob = [[0, 1], [0.95, 0.05]]
+            teamobj.ball_bowled(np.random.choice(run_prob[0], p=run_prob[1]), 
+                             np.random.choice(wicket_prob[0], p=wicket_prob[1]))
+                
+
+    print(team1.batsmen_score, team1.team_score, team1.status, team1.status_details, team1.over, team1.ball, team1.wickets)
+    print(team2.batsmen_score, team2.team_score, team2.status, team2.status_details, team2.over, team2.ball, team2.wickets)
 
 play_match(teamA_name, teamB_name)
+
